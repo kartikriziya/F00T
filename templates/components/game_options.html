@@ -1,0 +1,41 @@
+<!-- templates/game_options.html -->
+{% extends "index.html" %} {% block title %}Game Options{% endblock %} {% block
+content %}
+<div class="row mb-4">
+  <div class="col">
+    <h2>Saved Games</h2>
+    <a href="{{ url_for('add_game') }}" class="btn btn-primary">Add New Game</a>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Game Name</th>
+          <th>Date/Time</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for game in games %}
+        <tr>
+          <td>{{ game.id }}</td>
+          <td>{{ game.game_name }}</td>
+          <td>{{ game.date.strftime('%Y-%m-%d') }} {{ game.time }}</td>
+          <td>
+            <a
+              href="{{ url_for('game_detail', game_id=game.id) }}"
+              class="btn btn-sm btn-primary"
+              >Go to Game</a
+            >
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

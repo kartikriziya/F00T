@@ -1,0 +1,78 @@
+<!-- templates/drive_detail.html -->
+{% extends "index.html" %} {% block title %}Drive {{ drive.id }}{% endblock %}
+{% block content %}
+<div class="container">
+  <div class="row mb-4">
+    <div class="col">
+      <h2>Drive {{ drive.id }}</h2>
+      <a
+        href="{{ url_for('add_play', drive_id=drive.id) }}"
+        class="btn btn-primary"
+        >Add Play</a
+      >
+      <a
+        href="{{ url_for('game_detail', game_id=drive.game_id) }}"
+        class="btn btn-secondary"
+        >Back to Game</a
+      >
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Play #</th>
+              <th>ODK</th>
+              <th>Down</th>
+              <th>Distance</th>
+              <th>Yard Line</th>
+              <th>Play Type</th>
+              <th>Result</th>
+              <th>Gain/Loss</th>
+              <th>Formation</th>
+              <th>Direction</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for play in drive.plays %}
+            <tr>
+              <td>{{ loop.index }}</td>
+              <td>{{ play.odk }}</td>
+              <td>{{ play.down }}</td>
+              <td>{{ play.distance }}</td>
+              <td>{{ play.yard_line }}</td>
+              <td>{{ play.play_type }}</td>
+              <td>{{ play.result }}</td>
+              <td>
+                {% if play.gain_loss > 0 %}+{% endif %}{{ play.gain_loss }}
+              </td>
+              <td>{{ play.off_form }}</td>
+              <td>{{ play.dir_call }}</td>
+              <td>
+                <form
+                  action="{{ url_for('delete_play', play_id=play.id) }}"
+                  method="POST"
+                  class="d-inline"
+                >
+                  <button
+                    type="submit"
+                    class="btn btn-sm btn-danger"
+                    onclick="return confirm('Delete this play?')"
+                  >
+                    Delete
+                  </button>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

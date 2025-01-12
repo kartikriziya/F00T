@@ -1,0 +1,39 @@
+<!-- templates/drive_chart.html -->
+{% extends "index.html" %} {% block title %}Drive Chart - {{ game.game_name }}{%
+endblock %} {% block head %} {{ super() }}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/drive_chart.css') }}"
+/>
+{% endblock %} {% block content %}
+<div class="container">
+  <div class="row mb-4">
+    <div class="col">
+      <h2>Drive Chart - {{ game.game_name }}</h2>
+      <a
+        href="{{ url_for('game_detail', game_id=game.id) }}"
+        class="btn btn-secondary"
+        >Back to Game</a
+      >
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <div class="drive-chart">
+        <div class="field-container">
+          {% for drive in drives %} {% if drive.play_count > 0 %}
+          <div class="drive-line">
+            <div class="drive-bar {{ drive.result|lower }}">
+              <div class="drive-info">
+                {{ drive.result }} ({{ drive.play_count }} plays)
+              </div>
+            </div>
+          </div>
+          {% endif %} {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
