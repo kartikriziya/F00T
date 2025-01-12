@@ -25,15 +25,25 @@
       style="background-color: #122620; min-height: 100vh"
     >
       <!-- HEADER -->
-      <div class="row" id="header" style="background-color: ; height: 100px">
+      <div
+        class="row sticky-top"
+        id="header"
+        style="background-color: #b68d40; height: 100px"
+      >
         <!-- heaer_left -->
         <div class="col-6" id="header_left">
-          <a href="{{ url_for('index') }}">
+          <a
+            href="{{ url_for('index') }}"
+            class="d-flex justify-content-start align-items-center text-decoration-none"
+            style="color: #122620"
+          >
             <img
               src="{{ url_for('static', filename='images/F00T.png') }}"
               alt="F00T"
-              style="max-width: 100%; height: 100px"
+              class="img-fluid"
+              style="max-height: 100px"
             />
+            <h1 style="margin-left: 1rem">F00T.de</h1>
           </a>
         </div>
         <!-- header_right -->
@@ -60,7 +70,7 @@
           <!-- Login Form Button -->
           <a href="{{ url_for('login') }}">
             <button
-              class="btn btn-primary align-items-center"
+              class="btn btn-green align-items-center"
               style="height: 40px; width: auto; font-size: 1rem"
             >
               Login
@@ -71,14 +81,71 @@
       </div>
 
       <!-- CONTENT -->
-      <div class="content-wrapper" style="min-height: 100vh">
-        <div class="container mt-4" style="background-color: #f4ebd0">
-          {% block content %}{% endblock %}
+      <!-- <div class="content-wrapper" style="min-height: 100vh">
+        <div class="container mt-4" style="background-color: #f4ebd0"> -->
+      {% block content %}
+      <div class="row mt-5 pb-5 align-items-end" id="carousel_container">
+        <div class="col-12 d-flex justify-content-center align-items-center">
+          <div
+            id="carouselExampleIndicators"
+            class="carousel slide"
+            data-bs-ride="carousel"
+          >
+            <div class="carousel-indicators">
+              <button
+                type="button"
+                data-bs-target="#carouselExampleIndicators"
+                data-bs-slide-to="0"
+                class="active"
+                aria-current="true"
+                aria-label="Slide 1"
+              ></button>
+              <button
+                type="button"
+                data-bs-target="#carouselExampleIndicators"
+                data-bs-slide-to="1"
+                aria-label="Slide 2"
+              ></button>
+              <button
+                type="button"
+                data-bs-target="#carouselExampleIndicators"
+                data-bs-slide-to="2"
+                aria-label="Slide 3"
+              ></button>
+            </div>
+            <div class="carousel-inner" style="background-color: ">
+              <div class="carousel-item active">
+                <img
+                  src="../static/images/carousel_img_1.jpg"
+                  class="d-block carousel-img"
+                  alt="..."
+                />
+              </div>
+              <div class="carousel-item">
+                <img
+                  src="../static/images/carousel_img_2.jpg"
+                  class="d-block carousel-img"
+                  alt="..."
+                />
+              </div>
+              <div class="carousel-item">
+                <img
+                  src="../static/images/carousel_img_3.jpg"
+                  class="d-block carousel-img"
+                  alt="..."
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
+      {% endblock %}
+      <!-- </div>
+      </div> -->
+
       <!-- FOOTER -->
-      <div class="row" id="footer">
+      <div class="row fixed-bottom" id="footer">
         <div
           class="col-12 d-flex align-items-center justify-content-center"
           style="color: #b68d40; height: 50px"
