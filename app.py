@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 from datetime import datetime
 import os
 from models import db, User, Game, Drive, Play
@@ -67,10 +67,15 @@ def onLogin():
         password = request.form.get('password')
         user = User.query.filter_by(username=username).first()
         if user and user.password == password:
+            session['username'] = user.username  # Save username in session
             return redirect(url_for('game_options'))
         flash('Invalid credentials')
     return render_template('components/login.html')
 
+@app.route('/logout')
+def onLogout():
+    session.pop('username', None)  # Remove the 'username' key from the session
+    return redirect(url_for('onLogin'))  # Redirect to login page after logging out
 
 @app.route('/game-options')
 def game_options():
@@ -183,6 +188,43 @@ def delete_play(play_id):
         db.session.rollback()
         flash(f'Error deleting play: {str(e)}', 'error')
     return redirect(url_for('drive_detail', drive_id=drive_id))
+
+@app.route('/play/<int:play_id>/edit', methods=['GET', 'POST'])
+def edit_play(play_id):
+    # Fetch the play object from the database
+    play = Play.query.get_or_404(play_id)
+    
+    if request.method == 'POST':
+        try:
+            drive_id=play.drive_id
+            # Update the play object with the form data
+            play.quarter = request.form.get('quarter', type=int)
+            play.down = request.form.get('down', type=int)
+            play.distance = request.form.get('distance', type=int)
+            play.yard_line = request.form.get('yard_line', type=int)
+            play.play_type = request.form.get('play_type')
+            play.play_direction = request.form.get('play_direction')
+            play.result = request.form.get('result')
+            play.gain_loss = request.form.get('gain_loss', type=int)
+            play.personnel = request.form.get('personnel')
+            play.off_form = request.form.get('off_form')
+            play.form_adj = request.form.get('form_adj')
+            play.dir_call = request.form.get('dir_call')
+            play.off_play = request.form.get('off_play')
+
+            # Commit the updated play to the database
+            db.session.commit()
+
+            flash('Play updated successfully!', 'success')
+            return redirect(url_for('drive_detail', drive_id=drive_id))
+        except Exception as e:
+            db.session.rollback()
+            flash(f'Error updating play: {str(e)}', 'error')
+
+    # Render the form to edit the play
+    return render_template('components/edit_play.html', play=play)
+
+
 
 @app.route('/game/<int:game_id>/drivechart')
 def drive_chart(game_id):
