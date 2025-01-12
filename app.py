@@ -79,8 +79,11 @@ def onLogout():
 
 @app.route('/game-options')
 def game_options():
-    games = Game.query.all()
-    return render_template('components/game_options.html', games=games)
+    if not session.get('username'):
+        return redirect(url_for('index'))  # by default index
+    else:
+        games = Game.query.all()
+        return render_template('components/game_options.html', games=games)
 
 @app.route('/add-game', methods=['GET', 'POST'])
 def add_game():
